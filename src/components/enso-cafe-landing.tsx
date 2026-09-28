@@ -18,6 +18,7 @@ import {
   Star,
   Users,
   UtensilsCrossed,
+  Flame,
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
@@ -34,6 +35,19 @@ import chefTakeshi from "@/assets/chef-takeshi.webp";
 import reservationImage from "@/assets/reservation-table.webp";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import arrowPng from "@/assets/030.png";
+
+function ActionButton({ text, onClick, className, type = "button", size = "default" }: { text: string, onClick?: () => void, className?: string, type?: "button" | "submit", size?: "sm" | "default" | "full" }) {
+  const isSm = size === "sm";
+  return (
+    <button type={type} onClick={onClick} className={cn("flex items-center rounded-full bg-primary text-[#FFF5E5] outline-none", isSm ? "h-10 pl-5 pr-1 gap-3" : "h-14 pl-7 pr-2 gap-4", size === "full" && "w-full justify-between", className)}>
+      <span className={cn("font-display font-medium tracking-wide mt-0.5", isSm ? "text-lg" : "text-2xl")}>{text}</span>
+      <span className={cn("grid place-items-center rounded-full bg-[#111] text-white", isSm ? "size-8" : "size-10")}>
+        <ArrowUpRight size={isSm ? 16 : 20} strokeWidth={2} />
+      </span>
+    </button>
+  );
+}
 
 const dishes = [
   { name: "Truffle Pasta", detail: "Black truffle · parmesan", price: "$65", rating: "5.0", image: truffleImage },
@@ -61,10 +75,10 @@ const navItems = [
   ["Contact", "contact"],
 ] as const;
 
-const heroFeatures: Array<{ icon: typeof Sparkles; title: string; copy: string }> = [
-  { icon: Sparkles, title: "Special Events", copy: "Celebrate your moments with us" },
-  { icon: ChefHat, title: "Chef’s Experience", copy: "Crafted by our finest culinary team" },
-  { icon: UtensilsCrossed, title: "Timely Wings", copy: "Crispy, savory, sesame finished" },
+const heroFeatures = [
+  { icon: Star, title: "Special Events", copy: "Let us bring luxury to your special event" },
+  { icon: ChefHat, title: "Chef's Experience", copy: "Enjoy a front-row seat to culinary excellence" },
+  { icon: Flame, title: "Teriyaki Wings", copy: "Crispy, saucy wings with a hint of sesame" },
 ];
 
 function scrollTo(id: string) {
@@ -120,21 +134,21 @@ function Navbar() {
 
   return (
     <motion.header initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className={cn("fixed inset-x-0 top-0 z-50 transition-all duration-500", scrolled && "border-b border-border bg-background/85 backdrop-blur-xl")}>
-      <nav className="site-shell grid h-16 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 md:grid-cols-[1fr_auto_1fr]" aria-label="Main navigation">
+      <nav className="site-shell grid h-16 grid-cols-[minmax(0,1fr)_auto] items-center gap-4 lg:grid-cols-[1fr_auto_1fr]" aria-label="Main navigation">
         <button onClick={() => scrollTo("home")} className="w-fit font-display text-xl text-foreground" aria-label="Enso cafe home">Enso cafe</button>
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-8 lg:flex">
           {navItems.map(([label, id]) => <button key={id} onClick={() => scrollTo(id)} className="text-label text-muted-foreground transition-colors hover:text-foreground">{label}</button>)}
         </div>
         <div className="flex items-center justify-end gap-2">
-          <Button size="sm" onClick={() => scrollTo("menu")} className="hidden md:inline-flex">Order Now <ArrowUpRight size={13} /></Button>
-          <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"}>{open ? <X size={19} /> : <Menu size={19} />}</Button>
+          <ActionButton size="sm" onClick={() => scrollTo("menu")} className="hidden lg:flex" text="Order Now" />
+          <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen(!open)} aria-label={open ? "Close menu" : "Open menu"}>{open ? <X size={19} /> : <Menu size={19} />}</Button>
         </div>
       </nav>
       {open && (
-        <div className="border-t border-border bg-background px-5 py-5 md:hidden">
+        <div className="border-t border-border bg-background px-5 py-5 lg:hidden">
           <div className="flex flex-col gap-1">
             {navItems.map(([label, id]) => <button key={id} onClick={() => { scrollTo(id); setOpen(false); }} className="rounded-md px-3 py-3 text-left font-display text-2xl text-foreground hover:bg-card">{label}</button>)}
-            <Button className="mt-3" onClick={() => { scrollTo("menu"); setOpen(false); }}>Order Now <ArrowUpRight size={14} /></Button>
+            <ActionButton className="mt-3 w-fit" size="sm" onClick={() => { scrollTo("menu"); setOpen(false); }} text="Order Now" />
           </div>
         </div>
       )}
@@ -145,24 +159,17 @@ function Navbar() {
 function Hero() {
   const reduced = useReducedMotion();
   return (
-    <section id="home" className="relative overflow-hidden pb-20 pt-24 lg:min-h-[760px]">
-      <div className="site-shell relative grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-        <motion.div initial={reduced ? false : { opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.85, delay: 0.1 }} className="relative z-10 pt-6 lg:pt-16">
-          <p className="mb-5 text-label text-primary">Fine dining · New York</p>
+    <section id="home" className="relative overflow-hidden min-h-screen flex flex-col justify-center w-full">
+      <img src={heroImage} alt="Sesame glazed wings on a black ceramic plate" className="absolute inset-0 h-full w-full object-cover object-[85%_center] md:object-[90%_center]" />
+      <div className="absolute inset-0 bg-background/50 lg:bg-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
+      
+      <div className="site-shell relative z-10 grid items-center gap-10 lg:grid-cols-2 pt-24 pb-12">
+        <motion.div initial={reduced ? false : { opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.85, delay: 0.1 }} className="relative pt-6 lg:pt-16">
           <h1 className="max-w-2xl font-display text-hero leading-[0.88] text-foreground">Savor Every<br />Moment with<br /><span className="text-primary">Every Bite</span></h1>
-          <p className="mt-6 max-w-md text-sm leading-6 text-secondary-foreground">Experience carefully crafted cuisine with passion, fresh ingredients, and unforgettable flavors.</p>
-          <Button className="mt-7" onClick={() => scrollTo("reservation")}>Reserve Your Table <ArrowUpRight size={14} /></Button>
-          <svg aria-hidden="true" viewBox="0 0 180 100" className="absolute -right-2 top-20 hidden w-36 text-muted-foreground/60 lg:block" fill="none">
-            <path d="M4 55C56 15 112 26 153 68" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeDasharray="4 5" />
-            <path d="m143 64 12 5-6-13" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </motion.div>
-        <motion.div initial={reduced ? false : { opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.18 }} className="relative mx-auto w-full max-w-3xl">
-          <div className="absolute inset-16 rounded-full bg-primary/5 blur-3xl" />
-          <img src={heroImage} alt="Sesame glazed wings on a black ceramic plate" width={1536} height={768} className="relative aspect-[2/1] w-full rounded-xl object-cover shadow-hero lg:aspect-[1.45/1] lg:object-[63%_center]" />
-          <div className="absolute -bottom-12 left-2 right-2 grid gap-3 rounded-lg border border-border bg-card/95 p-4 shadow-card backdrop-blur-md sm:left-auto sm:right-6 sm:w-[310px]">
-            {heroFeatures.map(({ icon: Icon, title, copy }) => <div key={title} className="grid grid-cols-[auto_1fr] items-center gap-3"><span className="grid size-7 place-items-center rounded-full bg-primary text-primary-foreground"><Icon size={13} /></span><div><p className="text-xs font-medium text-foreground">{title}</p><p className="text-[10px] text-muted-foreground">{copy}</p></div></div>)}
-          </div>
+          <p className="mt-6 max-w-md text-sm leading-6 text-secondary-foreground">Experience gourmet dining crafted with passion, fresh ingredients, and unforgettable flavors.</p>
+          <ActionButton className="mt-7 w-fit" onClick={() => scrollTo("reservation")} text="Reserve Your Table" />
+          <div className="absolute -right-20 top-20 hidden h-20 w-36 lg:block bg-primary -scale-x-100 opacity-90 pointer-events-none" style={{ WebkitMaskImage: `url(${arrowPng})`, WebkitMaskSize: 'contain', WebkitMaskRepeat: 'no-repeat', WebkitMaskPosition: 'center', maskImage: `url(${arrowPng})`, maskSize: 'contain', maskRepeat: 'no-repeat', maskPosition: 'center' }} />
         </motion.div>
       </div>
     </section>
@@ -188,7 +195,7 @@ function MenuSection() {
                 </div>
                 <div className="px-2 pb-2 pt-5">
                   <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-4"><div className="min-w-0"><h3 className="truncate font-display text-2xl text-foreground">{dish.name}</h3><p className="mt-1 text-[11px] text-muted-foreground">{dish.detail}</p></div><p className="font-display text-xl text-primary">{dish.price}</p></div>
-                  <div className="mt-5 flex items-center justify-between"><Button size="sm" onClick={() => scrollTo("reservation")}>Order Now <ArrowUpRight size={13} /></Button><span className="flex items-center gap-1 text-xs text-muted-foreground"><Star size={12} className="fill-primary text-primary" /> {dish.rating}</span></div>
+                  <div className="mt-5 flex items-center justify-between"><ActionButton size="sm" onClick={() => scrollTo("reservation")} text="Order Now" /><span className="flex items-center gap-1 text-xs text-muted-foreground"><Star size={12} className="fill-primary text-primary" /> {dish.rating}</span></div>
                 </div>
               </article>
             </Reveal>;
@@ -212,7 +219,7 @@ function ServiceSection() {
           <div className="mt-7 grid grid-cols-2 gap-x-5 gap-y-4">
             {services.map((item) => <div key={item} className="flex items-center gap-2 text-xs text-secondary-foreground"><span className="grid size-5 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground"><Check size={11} /></span>{item}</div>)}
           </div>
-          <Button className="mt-8" onClick={() => scrollTo("reservation")}>Book a Table <ArrowUpRight size={14} /></Button>
+          <ActionButton className="mt-8 w-fit" onClick={() => scrollTo("reservation")} text="Book a Table" />
         </Reveal>
         <Reveal delay={0.08} className="relative mx-auto h-[520px] w-full max-w-[620px]">
           <div className="absolute bottom-0 right-[8%] h-[88%] w-[54%] overflow-hidden rounded-lg bg-card shadow-card"><img src={serverImage} alt="Enso cafe dining room server" loading="lazy" width={1024} height={1280} className="h-full w-full object-cover object-top" /></div>
@@ -237,7 +244,7 @@ function LuxurySection() {
           <p className="mb-4 text-label text-primary">An occasion, elevated</p>
           <h2 className="font-display text-section leading-[0.94]">Luxury dining<br />starts here</h2>
           <p className="mt-6 max-w-sm text-sm leading-6 text-muted-foreground">Whether it’s an intimate dinner or a grand celebration, we’re here to make it special.</p>
-          <Button className="mt-8" onClick={() => scrollTo("reservation")}>Book a Table <ArrowUpRight size={14} /></Button>
+          <ActionButton className="mt-8 w-fit" onClick={() => scrollTo("reservation")} text="Book a Table" />
         </Reveal>
       </div>
     </section>
@@ -303,7 +310,7 @@ function ReservationSection() {
                 <label className="grid gap-1.5 text-[10px] font-semibold uppercase text-form-muted">Time<select required defaultValue="" className="form-control"><option value="" disabled>Select time</option><option>5:30 PM</option><option>7:00 PM</option><option>8:30 PM</option><option>10:00 PM</option></select></label>
               </div>
             </div>
-            <Button className="mt-6 w-full" type="submit">Confirm Reservation <ArrowUpRight size={14} /></Button>
+            <ActionButton className="mt-6" size="full" type="submit" text="Confirm Reservation" />
             {message && <p role="status" className="mt-4 flex items-center gap-2 text-xs font-medium text-success"><Check size={14} />{message}</p>}
           </form>
         </Reveal>
@@ -323,7 +330,7 @@ function CtaBanner() {
             <p className="mb-4 text-label text-primary">Your table awaits</p>
             <h2 className="font-display text-section leading-[0.94]">Let Flavor<br />Lead the Way</h2>
             <p className="mt-5 max-w-sm text-sm leading-6 text-secondary-foreground">Experience exceptional flavors and moments that linger long after the last bite.</p>
-            <Button className="mt-7" onClick={() => scrollTo("reservation")}>Book a Table <ArrowUpRight size={14} /></Button>
+            <ActionButton className="mt-7 w-fit" onClick={() => scrollTo("reservation")} text="Book a Table" />
           </div>
         </Reveal>
       </div>
