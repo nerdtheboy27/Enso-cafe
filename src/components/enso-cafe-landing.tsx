@@ -22,12 +22,12 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 
-import heroAsset from "@/assets/Enso cafe-hero.webp.asset.json";
+import heroAsset from "@/assets/enso-cafe-hero.webp.asset.json";
 import truffleAsset from "@/assets/truffle-pasta.webp.asset.json";
 import lobsterAsset from "@/assets/saffron-lobster.webp.asset.json";
 import fondantAsset from "@/assets/pistachio-fondant.webp.asset.json";
 import bannerAsset from "@/assets/cta-banner.webp.asset.json";
-import serverImage from "@/assets/Enso cafe-server.webp";
+import serverImage from "@/assets/enso-cafe-server.webp";
 import chefJames from "@/assets/chef-james.webp";
 import chefElena from "@/assets/chef-elena.webp";
 import chefTakeshi from "@/assets/chef-takeshi.webp";
