@@ -22,11 +22,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 
-import heroAsset from "@/assets/enso-cafe-hero.webp.asset.json";
-import truffleAsset from "@/assets/truffle-pasta.webp.asset.json";
-import lobsterAsset from "@/assets/saffron-lobster.webp.asset.json";
-import fondantAsset from "@/assets/pistachio-fondant.webp.asset.json";
-import bannerAsset from "@/assets/cta-banner.webp.asset.json";
+
 import serverImage from "@/assets/enso-cafe-server.webp";
 import chefJames from "@/assets/chef-james.webp";
 import chefElena from "@/assets/chef-elena.webp";
@@ -36,9 +32,9 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const dishes = [
-  { name: "Truffle Pasta", detail: "Black truffle · parmesan", price: "$65", rating: "5.0", image: truffleAsset.url },
-  { name: "Saffron Lobster", detail: "Lobster · saffron butter", price: "$90", rating: "4.9", image: lobsterAsset.url },
-  { name: "Pistachio Fondant", detail: "Pistachio · vanilla crémeux", price: "$35", rating: "5.0", image: fondantAsset.url },
+  { name: "Truffle Pasta", detail: "Black truffle · parmesan", price: "$65", rating: "5.0", image: "https://images.unsplash.com/photo-1473093295043-cdd812d0e601?q=80&w=800&auto=format&fit=crop" },
+  { name: "Saffron Lobster", detail: "Lobster · saffron butter", price: "$90", rating: "4.9", image: "https://images.unsplash.com/photo-1549488344-c6dc8508e826?q=80&w=800&auto=format&fit=crop" },
+  { name: "Pistachio Fondant", detail: "Pistachio · vanilla crémeux", price: "$35", rating: "5.0", image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?q=80&w=800&auto=format&fit=crop" },
 ];
 
 const chefs = [
@@ -159,7 +155,7 @@ function Hero() {
         </motion.div>
         <motion.div initial={reduced ? false : { opacity: 0, scale: 0.96 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1, delay: 0.18 }} className="relative mx-auto w-full max-w-3xl">
           <div className="absolute inset-16 rounded-full bg-primary/5 blur-3xl" />
-          <img src={heroAsset.url} alt="Sesame glazed wings on a black ceramic plate" width={1536} height={768} className="relative aspect-[2/1] w-full rounded-xl object-cover shadow-hero lg:aspect-[1.45/1] lg:object-[63%_center]" />
+          <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=1920&auto=format&fit=crop" alt="Sesame glazed wings on a black ceramic plate" width={1536} height={768} className="relative aspect-[2/1] w-full rounded-xl object-cover shadow-hero lg:aspect-[1.45/1] lg:object-[63%_center]" />
           <div className="absolute -bottom-12 left-2 right-2 grid gap-3 rounded-lg border border-border bg-card/95 p-4 shadow-card backdrop-blur-md sm:left-auto sm:right-6 sm:w-[310px]">
             {heroFeatures.map(({ icon: Icon, title, copy }) => <div key={title} className="grid grid-cols-[auto_1fr] items-center gap-3"><span className="grid size-7 place-items-center rounded-full bg-primary text-primary-foreground"><Icon size={13} /></span><div><p className="text-xs font-medium text-foreground">{title}</p><p className="text-[10px] text-muted-foreground">{copy}</p></div></div>)}
           </div>
@@ -317,7 +313,7 @@ function CtaBanner() {
     <section className="pb-24">
       <div className="site-shell">
         <Reveal className="relative min-h-[430px] overflow-hidden rounded-xl bg-image">
-          <img src={bannerAsset.url} alt="Mushroom pasta in a black bowl" loading="lazy" width={1810} height={768} className="absolute inset-0 h-full w-full object-cover object-[65%_center]" />
+          <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=1920&auto=format&fit=crop" alt="Mushroom pasta in a black bowl" loading="lazy" width={1810} height={768} className="absolute inset-0 h-full w-full object-cover object-[65%_center]" />
           <div className="absolute inset-0 bg-cta-shade" />
           <div className="relative z-10 flex min-h-[430px] max-w-xl flex-col items-start justify-center px-7 py-12 sm:px-14">
             <p className="mb-4 text-label text-primary">Your table awaits</p>

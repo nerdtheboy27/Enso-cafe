@@ -10,7 +10,6 @@ export default defineConfig({
     tanstackStart({
       server: { entry: "server" }
     }),
-    TanStackRouterVite(),
     react(),
     tailwindcss(),
     tsconfigPaths(),
