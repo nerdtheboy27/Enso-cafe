@@ -27,6 +27,9 @@ import heroImage from "@/assets/herobanner.png";
 import truffleImage from "@/assets/truffle pasta.png";
 import lobsterImage from "@/assets/saffron lobster.png";
 import fondantImage from "@/assets/PISTACHIO FONDANT.png";
+import dish1 from "@/assets/dish1.png";
+import dish2 from "@/assets/dish2.png";
+import dish3 from "@/assets/dish3.png";
 import bannerImage from "@/assets/cta banner-clean.png";
 import serverImage from "@/assets/enso-cafe-server.webp";
 import chefJames from "@/assets/chef-james.webp";
@@ -40,19 +43,19 @@ import arrowPng from "@/assets/030.png";
 function ActionButton({ text, onClick, className, type = "button", size = "default" }: { text: string, onClick?: () => void, className?: string, type?: "button" | "submit", size?: "sm" | "default" | "full" }) {
   const isSm = size === "sm";
   return (
-    <button type={type} onClick={onClick} className={cn("flex items-center rounded-full bg-primary text-[#FFF5E5] outline-none", isSm ? "h-10 pl-5 pr-1 gap-3" : "h-14 pl-7 pr-2 gap-4", size === "full" && "w-full justify-between", className)}>
-      <span className={cn("font-display font-medium tracking-wide mt-0.5", isSm ? "text-lg" : "text-2xl")}>{text}</span>
-      <span className={cn("grid place-items-center rounded-full bg-[#111] text-white", isSm ? "size-8" : "size-10")}>
-        <ArrowUpRight size={isSm ? 16 : 20} strokeWidth={2} />
+    <button type={type} onClick={onClick} className={cn("flex items-center rounded-full bg-primary text-[#FFF5E5] outline-none hover:brightness-110 transition-all", isSm ? "h-9 pl-4 pr-1 gap-2" : "h-14 pl-7 pr-2 gap-4", size === "full" && "w-full justify-between", className)}>
+      <span className={cn("font-medium tracking-wide", isSm ? "text-[13px] font-sans" : "text-2xl font-display mt-0.5")}>{text}</span>
+      <span className={cn("grid place-items-center rounded-full bg-[#111] text-white", isSm ? "size-7" : "size-10")}>
+        <ArrowUpRight size={isSm ? 14 : 20} strokeWidth={2} />
       </span>
     </button>
   );
 }
 
 const dishes = [
-  { name: "Truffle Pasta", detail: "Black truffle · parmesan", price: "$65", rating: "5.0", image: truffleImage },
-  { name: "Saffron Lobster", detail: "Lobster · saffron butter", price: "$90", rating: "4.9", image: lobsterImage },
-  { name: "Pistachio Fondant", detail: "Pistachio · vanilla crémeux", price: "$35", rating: "5.0", image: fondantImage },
+  { name: "Truffle Pasta", price: "$65", rating: "5.0", image: dish1 },
+  { name: "Sea Urchin Risotto", price: "$90", rating: "4.9", image: dish2 },
+  { name: "Matcha Lava Cake", price: "$35", rating: "5.0", image: dish3 },
 ];
 
 const chefs = [
@@ -112,7 +115,7 @@ function SectionIntro({ eyebrow, title, copy, align = "left" }: { eyebrow: strin
   return (
     <div className={cn("mb-12 grid items-end gap-6 md:grid-cols-2", align === "right" && "md:text-right")}>
       <Reveal>
-        <p className="mb-4 text-label text-primary">{eyebrow}</p>
+        {eyebrow && <p className="mb-4 text-label text-primary">{eyebrow}</p>}
         <h2 className="font-display text-section leading-[0.94] text-foreground">{title}</h2>
       </Reveal>
       <Reveal delay={0.08} className={cn("max-w-sm md:justify-self-end", align === "right" && "md:justify-self-start")}>
@@ -179,23 +182,34 @@ function Hero() {
 function MenuSection() {
   const row = useRef<HTMLDivElement>(null);
   const [favorites, setFavorites] = useState<string[]>([]);
-  const slide = (direction: number) => row.current?.scrollBy({ left: direction * 360, behavior: "smooth" });
+  const slide = (direction: number) => row.current?.scrollBy({ left: direction * 400, behavior: "smooth" });
   return (
-    <section id="menu" className="section-space bg-secondary">
+    <section id="menu" className="section-space">
       <div className="site-shell">
-        <SectionIntro eyebrow="The collection" title={<>Indulge in<br />Culinary Artistry</>} copy="Explore our finest selections, crafted to perfection by world-class chefs." />
-        <div ref={row} className="scrollbar-hide -mx-5 flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 md:mx-0 md:grid md:grid-cols-3 md:px-0">
+        <SectionIntro eyebrow="" title={<>Indulge in<br />Culinary Artistry</>} copy="Explore our finest selections, crafted to perfection by world-class chefs." />
+        <div ref={row} className="scrollbar-hide -mx-5 flex snap-x snap-mandatory gap-6 overflow-x-auto px-5 pt-[180px] pb-10 md:mx-0 md:grid md:grid-cols-3 md:gap-8 lg:gap-10 md:px-0">
           {dishes.map((dish, index) => {
             const liked = favorites.includes(dish.name);
-            return <Reveal key={dish.name} delay={index * 0.08} className="min-w-[84vw] snap-center sm:min-w-[360px] md:min-w-0">
-              <article className="group overflow-hidden rounded-lg border border-border bg-card p-3 transition-transform duration-500 hover:-translate-y-1">
-                <div className="relative overflow-hidden rounded-md bg-image">
-                  <img src={dish.image} alt={dish.name} loading="lazy" width={768} height={768} className="aspect-square w-full object-cover transition-transform duration-700 group-hover:scale-[1.035]" />
-                  <Button variant="ghost" size="icon" className="absolute right-3 top-3 bg-background/65 text-foreground backdrop-blur" onClick={() => setFavorites((current) => liked ? current.filter((item) => item !== dish.name) : [...current, dish.name])} aria-label={`${liked ? "Remove" : "Add"} ${dish.name} ${liked ? "from" : "to"} favorites`}><Heart size={16} className={liked ? "fill-primary text-primary" : ""} /></Button>
+            return <Reveal key={dish.name} delay={index * 0.08} className="min-w-[85vw] snap-center sm:min-w-[360px] md:min-w-0">
+              <article className="group relative flex flex-col rounded-[32px] bg-[#161616] border border-white/5 p-6 lg:p-7 lg:pb-8 transition-transform duration-500 hover:-translate-y-2">
+                <div className="-mt-[140px] sm:-mt-[160px] lg:-mt-[170px] mb-3 flex justify-center pointer-events-none drop-shadow-2xl">
+                  <img src={dish.image} alt={dish.name} loading="lazy" width={768} height={768} className="w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] lg:w-[340px] lg:h-[340px] object-contain transition-transform duration-700 group-hover:rotate-6 group-hover:scale-105" />
                 </div>
-                <div className="px-2 pb-2 pt-5">
-                  <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-4"><div className="min-w-0"><h3 className="truncate font-display text-2xl text-foreground">{dish.name}</h3><p className="mt-1 text-[11px] text-muted-foreground">{dish.detail}</p></div><p className="font-display text-xl text-primary">{dish.price}</p></div>
-                  <div className="mt-5 flex items-center justify-between"><ActionButton size="sm" onClick={() => scrollTo("reservation")} text="Order Now" /><span className="flex items-center gap-1 text-xs text-muted-foreground"><Star size={12} className="fill-primary text-primary" /> {dish.rating}</span></div>
+                
+                <h3 className="text-center font-display text-3xl tracking-wide text-foreground mb-6">{dish.name}</h3>
+                
+                <div className="flex items-center justify-between mb-4">
+                  <p className="font-sans text-[22px] font-medium text-foreground">{dish.price}</p>
+                  <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-foreground hover:bg-white/5 rounded-full h-9 w-9" onClick={() => setFavorites((current) => liked ? current.filter((item) => item !== dish.name) : [...current, dish.name])} aria-label={`${liked ? "Remove" : "Add"} ${dish.name} ${liked ? "from" : "to"} favorites`}>
+                    <Heart size={18} className={liked ? "fill-primary text-primary" : ""} />
+                  </Button>
+                </div>
+                
+                <div className="flex items-center justify-between">
+                  <ActionButton size="sm" onClick={() => scrollTo("reservation")} text="Order Now" />
+                  <span className="flex items-center gap-1.5 text-foreground font-medium text-sm">
+                    <Star size={16} className="fill-primary text-primary" /> {dish.rating}
+                  </span>
                 </div>
               </article>
             </Reveal>;
